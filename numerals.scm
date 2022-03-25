@@ -107,3 +107,66 @@
 (define c/2
   (lambda (n)
     ((n cnot) c#t)))
+
+(define ccons
+  (lambda (x)
+    (lambda (y)
+      (lambda (z)
+        ((z x) y)))))
+
+(define ccar
+  (lambda (p)
+    (p c#t)))
+
+(define ccdr
+  (lambda (p)
+    (p c#f)))
+
+(define (printnpair p)
+  (p (lambda (x)
+       (lambda (y)
+         (cons (printn x)
+               (printn y))))))
+
+(define cp
+  (lambda (n)
+    (ccdr
+     ((n
+       (lambda (p)
+         ((ccons
+           (cs (ccar p)))
+          (ccar p))))
+      ((ccons c0) c0)))))
+
+(define c!
+  (lambda (n)
+    (ccdr
+     ((n
+       (lambda (d)
+         ((ccons
+           (cs (ccar d)))
+          ((c*
+            (cs (ccar d)))
+           (ccdr d)))))
+      ((ccons c0) c1)))))
+
+(define Y
+  (lambda (f)
+    ((lambda (x) (f (x x)))
+     (lambda (x) (f (x x))))))
+
+(define Z
+  (lambda (f)
+    ((lambda (x) (f (lambda (y) ((x x) y))))
+     (lambda (x) (f (lambda (y) ((x x) y)))))))
+
+(define gamma
+  (lambda (f)
+    (lambda (x)
+      (((c=0 x)
+        c1)
+       (lambda (y)
+         (((c* x)
+           (f (cp x))) y))))))
+
+(define c!! (Z gamma))
