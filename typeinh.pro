@@ -49,27 +49,26 @@ whenAbstractedEquals([X | Xs], N, λ(X, M)) :-
 Γ ⊢ X : Τ   :- member(X : Τ, Γ), !.
 
 % Τ е базов тип
-Γ#TV ⊢ M : Α    :- atom(Α), not(member(Α, TV)),
-                   member(X : Τ, Γ),
-                   % deconstruct(-Ρs, -Α, +Τ)
-                   deconstruct(Ρs, Α, Τ),
-                   Γ#[Α | TV] ⊩ Ns : Ρs,
-                   % whenAppliedEquals(+X, +Ns, -M)
-                   whenAppliedEquals(X, Ns, M).
+Γ #TV ⊢ M : Α    :- atom(Α), not(member(Α, TV)),
+                    member(X : Τ, Γ),
+                    % deconstruct(-Ρs, -Α, +Τ)
+                    deconstruct(Ρs, Α, Τ),
+                    Γ #[Α | TV] ⊩ Ns : Ρs,
+                    % whenAppliedEquals(+X, +Ns, -M)
+                    whenAppliedEquals(X, Ns, M).
                 
 
 % Τ е функционален тип
-Γ#TV ⊢ M : Τ    :- functional(Τ),
-                   % deconstruct(-Ρs, -Σ, +Τ)
-                   deconstruct(Ρs, Σ, Τ),
-                   % extendContext(+Γ, -Xs, +Ρs, -Γ1)
-                   extendContext(Γ, Xs, Ρs, Γ1),
-                   Γ1#TV ⊢ N : Σ,
-                   % whenAbstractedEquals(+Xs, +N, -M)
-                   whenAbstractedEquals(Xs, N, M).
+Γ #TV ⊢ M : Τ    :- functional(Τ),
+                    % deconstruct(-Ρs, -Σ, +Τ)
+                    deconstruct(Ρs, Σ, Τ),
+                    % extendContext(+Γ, -Xs, +Ρs, -Γ1)
+                    extendContext(Γ, Xs, Ρs, Γ1),
+                    Γ1 #TV ⊢ N : Σ,
+                    % whenAbstractedEquals(+Xs, +N, -M)
+                    whenAbstractedEquals(Xs, N, M).
 
-
-⊢ M : Τ             :- []#[] ⊢ M : Τ.
+⊢ M : Τ             :- [] #[] ⊢ M : Τ.
 
 i(λ(x,x)).
 ti(α ⇒ α).
