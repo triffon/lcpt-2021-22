@@ -5,6 +5,7 @@
 ;; C-x C-s - записване на файла (save)
 ;; C-x C-e - оценяване на израза преди курсора
 ;; C-c C-r - оценяване на всички изрази в избраната област
+;; C-g - escape, прекъсва текущата команда
 ;; C-x 1 - "максимизира" текущия прозорец
 ;; C-x 2 - разделя хоризонтално
 ;; C-x 3 - разделя вертикално
@@ -113,6 +114,33 @@
 
 (set-goal (pf "A ord (A -> F)"))
 
-(set-goal (pf "(A & B -> F) -> (A -> F) ord (B -> F"))
+(set-goal (pf "(A & B -> F) -> (A -> F) ord (B -> F)"))
 
 (set-goal (pf "(A -> F) ord (B -> F) -> A & B -> F"))
+
+(add-pvar-name "p" (make-arity (py "alpha")))
+
+(pp (pf "A -> p x"))
+
+(add-var-name "y" (py "alpha"))
+
+(set-goal (pf "all x p x -> ex x p x"))
+(assume "u")
+;; ∃+
+(ex-intro (pt "y"))
+;; (use-with "u" (pt "y"))
+(use "u")
+
+(set-goal (pf "all x (p x -> B) -> (ex x p x -> B)"))
+(assume "u" "v")
+;; ∃-
+(ex-elim "v")
+(assume "y" "w")
+;;(use "u")
+(use-with "u" (pt "y") "w")
+
+(set-goal (pf "all x (p x -> F) -> ex x p x -> F"))
+
+(set-goal (pf "ex x (p x -> all x p x)"))
+(use "Stab")
+(assume "v")
