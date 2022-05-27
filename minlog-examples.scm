@@ -143,4 +143,17 @@
 
 (set-goal (pf "ex x (p x -> all x p x)"))
 (use "Stab")
+(assume "u")
+(use "u")
+(ex-intro (pt "y"))
 (assume "v")
+;; ∀+
+(assume "x")
+(use "Stab")
+(assume "w")
+(use "u")
+(ex-intro (pt "x"))
+(assume "a")
+(use "Efq")
+(use "w")
+(use "a")
